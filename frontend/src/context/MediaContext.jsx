@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import { MAX_DESCRIPTION_LENGTH } from '../utils/allowedTags';
 
 export const MediaContext = createContext();
 
@@ -103,7 +104,7 @@ export const MediaProvider = ({ children }) => {
       image: searchResult.coverUrl || '/image1.jpg',
       rating: 1,
       tags: [],
-      description: searchResult.overview || '',
+      description: (searchResult.overview || '').slice(0, MAX_DESCRIPTION_LENGTH),
       comments: []
     };
     addMedia(newMedia);
