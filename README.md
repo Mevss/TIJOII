@@ -19,9 +19,9 @@ npm run dev
 
 ## 4. Testy
 
-npm test
-npm run test:unit
-npm run test:integration
+npm test  
+npm run test:unit  
+npm run test:integration  
 
 ## Testy manualne
 
