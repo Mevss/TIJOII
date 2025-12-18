@@ -2,12 +2,11 @@ import { describe, it, expect } from 'vitest';
 import request from 'supertest';
 import app from '../../server.js';
 
-describe('GET /api/search - Real Integration Tests', () => {
+describe('Search API Integration', () => {
   it('should return books from OpenLibrary API', async () => {
     const response = await request(app)
       .get('/api/search')
-      .query({ query: 'tolkien', source: 'openlibrary' })
-      .timeout(10000);
+      .query({ query: 'tolkien', source: 'openlibrary' });
 
     expect(response.status).toBe(200);
     expect(response.body.source).toBe('openlibrary');
@@ -16,15 +15,14 @@ describe('GET /api/search - Real Integration Tests', () => {
     expect(response.body.results[0]).toHaveProperty('title');
     expect(response.body.results[0]).toHaveProperty('author');
     expect(response.body.results[0].type).toBe('book');
-  }, 10000);
+  });
 
   it.skipIf(!process.env.TMDB_API_KEY)('should return movies from TMDB API with API key', async () => {
     const tmdbApiKey = process.env.TMDB_API_KEY;
 
     const response = await request(app)
       .get('/api/search')
-      .query({ query: 'matrix', source: 'tmdb', apiKey: tmdbApiKey })
-      .timeout(10000);
+      .query({ query: 'matrix', source: 'tmdb', apiKey: tmdbApiKey });
 
     expect(response.status).toBe(200);
     expect(response.body.source).toBe('tmdb');
@@ -32,7 +30,7 @@ describe('GET /api/search - Real Integration Tests', () => {
     expect(response.body.results.length).toBeGreaterThan(0);
     expect(response.body.results[0]).toHaveProperty('title');
     expect(response.body.results[0].type).toBe('movie');
-  }, 10000);
+  });
 
   it('should return 400 without query parameter', async () => {
     const response = await request(app)
