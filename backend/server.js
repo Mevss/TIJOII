@@ -13,12 +13,10 @@ app.use(express.json());
 
 app.use('/api', apiRoutes);
 
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Server is running' });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+if (import.meta.url === `file:///${process.argv[1].replace(/\\/g, '/')}`) {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
 
 export default app;
