@@ -18,13 +18,8 @@ describe('Real API E2E Tests', () => {
     expect(response.body.results[0].type).toBe('book');
   }, 15000);
 
-  it('should fetch real movies from TMDB API', async () => {
+  it.skipIf(!process.env.TMDB_API_KEY)('should fetch real movies from TMDB API', async () => {
     const tmdbApiKey = process.env.TMDB_API_KEY;
-
-    if (!tmdbApiKey) {
-      console.warn('TMDB_API_KEY not found in .env skipping E2E test');
-      return;
-    }
 
     const response = await request(app)
       .get('/api/search')

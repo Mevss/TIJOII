@@ -1,38 +1,29 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import request from 'supertest';
-import axios from 'axios';
 import app from '../../server.js';
-import { createMockBookDetailsResponse, createMockMovieDetailsResponse } from '../factories/testData.js';
 
-vi.mock('axios');
-
-describe('GET /api/details/:source/:id - Integration Tests', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
+describe('GET /api/details/:source/:id - Real Integration Tests', () => {
   it('should return book details from OpenLibrary', async () => {
-    const mockResponse = createMockBookDetailsResponse();
-    vi.mocked(axios.get).mockResolvedValue(mockResponse);
-
     const response = await request(app)
-      .get('/api/details/openlibrary/OL123W');
+      .get('/api/details/openlibrary/%2Fworks%2FOL45804W')
+      .timeout(10000);
 
     expect(response.status).toBe(200);
-    expect(response.body).toEqual(mockResponse.data);
-  });
+    expect(response.body).toHaveProperty('title');
+  }, 10000);
 
-  it('should return movie details from TMDB', async () => {
-    const mockResponse = createMockMovieDetailsResponse();
-    vi.mocked(axios.get).mockResolvedValue(mockResponse);
+  it.skipIf(!process.env.TMDB_API_KEY)('should return movie details from TMDB', async () => {
+    const tmdbApiKey = process.env.TMDB_API_KEY;
 
     const response = await request(app)
-      .get('/api/details/tmdb/550')
-      .query({ apiKey: 'test-key' });
+      .get('/api/details/tmdb/603')
+      .query({ apiKey: tmdbApiKey })
+      .timeout(10000);
 
     expect(response.status).toBe(200);
-    expect(response.body).toEqual(mockResponse.data);
-  });
+    expect(response.body).toHaveProperty('title');
+    expect(response.body).toHaveProperty('id');
+  }, 10000);
 
   it('should return 400 with invalid source', async () => {
     const response = await request(app)

@@ -1,43 +1,38 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import request from 'supertest';
-import axios from 'axios';
 import app from '../../server.js';
-import { createMockBookResponse, createMockMovieResponse } from '../factories/testData.js';
 
-vi.mock('axios');
-
-describe('GET /api/search - Integration Tests', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('should return books from OpenLibrary', async () => {
-    const mockResponse = createMockBookResponse();
-    vi.mocked(axios.get).mockResolvedValue(mockResponse);
-
+describe('GET /api/search - Real Integration Tests', () => {
+  it('should return books from OpenLibrary API', async () => {
     const response = await request(app)
       .get('/api/search')
-      .query({ query: 'harry', source: 'openlibrary' });
+      .query({ query: 'tolkien', source: 'openlibrary' })
+      .timeout(10000);
 
     expect(response.status).toBe(200);
     expect(response.body.source).toBe('openlibrary');
-    expect(response.body.results).toHaveLength(1);
+    expect(response.body.results).toBeInstanceOf(Array);
+    expect(response.body.results.length).toBeGreaterThan(0);
+    expect(response.body.results[0]).toHaveProperty('title');
+    expect(response.body.results[0]).toHaveProperty('author');
     expect(response.body.results[0].type).toBe('book');
-  });
+  }, 10000);
 
-  it('should return movies from TMDB with API key', async () => {
-    const mockResponse = createMockMovieResponse();
-    vi.mocked(axios.get).mockResolvedValue(mockResponse);
+  it.skipIf(!process.env.TMDB_API_KEY)('should return movies from TMDB API with API key', async () => {
+    const tmdbApiKey = process.env.TMDB_API_KEY;
 
     const response = await request(app)
       .get('/api/search')
-      .query({ query: 'avatar', source: 'tmdb', apiKey: 'test-key' });
+      .query({ query: 'matrix', source: 'tmdb', apiKey: tmdbApiKey })
+      .timeout(10000);
 
     expect(response.status).toBe(200);
     expect(response.body.source).toBe('tmdb');
-    expect(response.body.results).toHaveLength(1);
+    expect(response.body.results).toBeInstanceOf(Array);
+    expect(response.body.results.length).toBeGreaterThan(0);
+    expect(response.body.results[0]).toHaveProperty('title');
     expect(response.body.results[0].type).toBe('movie');
-  });
+  }, 10000);
 
   it('should return 400 without query parameter', async () => {
     const response = await request(app)

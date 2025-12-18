@@ -11,9 +11,17 @@ export default defineConfig({
       exclude: [
         'node_modules/',
         '__tests__/',
-        'vitest.config.js'
+        'vitest.config.js',
+        '**/*.bak'
       ]
     },
-    testTimeout: 10000
+    testTimeout: 10000,
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/*.bak',
+      'services/*.test.js',
+      'controllers/*.test.js'
+    ]
   }
 });

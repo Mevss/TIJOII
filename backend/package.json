@@ -11,7 +11,8 @@
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
-    "test:unit": "vitest run --exclude **/*.e2e.test.js",
+    "test:unit": "vitest run __tests__/unit/",
+    "test:integration": "vitest run __tests__/integration/",
     "test:e2e": "vitest run __tests__/e2e/"
   },
   "keywords": [

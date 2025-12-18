@@ -17,6 +17,11 @@ npm run dev
 cd frontend
 npm run dev
 
+## 4. Testy
+
+npm test
+
+
 ## Testy manualne
 
 | ID                | TC001                          |
@@ -41,7 +46,7 @@ npm run dev
 |-------------------|--------------------------------|
 | Tytuł             | Walidacja poprawnego klucza TMDB API |
 | Warunki początkowe| Aplikacja jest uruchomiona, użytkownik ma poprawny klucz TMDB API |
-| Kroki testowe     | 1. Przewiń do sekcji "TMDB API Key Configuration".<br>2. Wybierz opcję "Custom API Key".<br>3. Wklej poprawny klucz API do pola tekstowego.<br>4. Naciśnij przycisk "Validate & Save". |
+| Kroki testowe     | 1. Przewiń do sekcji "TMDB API Key Configuration".<br>2. Wybierz opcję "Custom API Key".<br>3. Wklej poprawny klucz API do pola tekstowego.<br>4. Naciśnij przycisk "Save Configuration". |
 | Oczekiwany rezultat | Wyświetla się komunikat "API key is valid". |
 
 ---
