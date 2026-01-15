@@ -1,5 +1,4 @@
-# TIJOII
-## Testowanie i Jakość Oprogramowania II
+# Testowanie i Jakość Oprogramowania II
 
 ## Autor 
 Szymon Masłoń
@@ -7,7 +6,7 @@ Szymon Masłoń
 ## Opis projektu
 Aplikacja do zarządzania kolekcją różnych multimediów. Multimedia są pobierane z API Openlibrary oraz TMDb(przy wcześniejszym podaniu klucza). Multimedia można oznaczać tagami wyznaczonymi przez stronę, oceniać w skali 1-5 gwiazdek, edytować i komentować. Aplikacja pozwala również na dodanie własnych, lokalnych multimediów.
 
-## i Uruchamianie projektu
+## Uruchamianie projektu
 
 ### 1. Instalacja zależności
 
